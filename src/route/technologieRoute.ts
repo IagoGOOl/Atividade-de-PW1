@@ -16,7 +16,7 @@ router.post('/', checkExistsUserAccount, createTechnologie);
 
 router.put('/:id', checkExistsUserAccount, putTechnologies);
 
-router.patch('/:id/studied', checkExistsUserAccount, patchTechnologies);
+router.patch('/:id', checkExistsUserAccount, patchTechnologies);
 
 router.delete('/:id', checkExistsUserAccount, deleteTechnologies);
 

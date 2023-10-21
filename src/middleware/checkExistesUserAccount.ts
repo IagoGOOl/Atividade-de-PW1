@@ -6,7 +6,7 @@ export function checkExistsUserAccount(
 	res: Response,
 	next: NextFunction
 ) {
-	const { userId } = req.headers;
+	const userId = req.headers.userid;
 	const user = serviceGetUser(userId as string);
 
 	if (!user) {

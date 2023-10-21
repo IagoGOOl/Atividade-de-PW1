@@ -11,11 +11,9 @@ export const serviceCreateUser = ({
 }: User) => {
 	const data = { id, name, username, technologies: [] };
 	userDB.push(data);
-	console.log(userDB);
 };
 
 export const serviceGetUser = (id: string) => {
-	console.log(id);
 	return userDB.find((obj) => obj.id === id);
 };
 
