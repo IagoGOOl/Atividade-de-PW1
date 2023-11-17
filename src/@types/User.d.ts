@@ -1,8 +1,8 @@
 import { Technologie } from './Technologies';
 
 export type User = {
-	id: string;
+	id?: string;
 	name: string;
 	username: string;
-	technologies: Technologie[];
+	technologies?: Technologie[];
 };

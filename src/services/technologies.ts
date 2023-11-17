@@ -1,64 +1,47 @@
-import { v4 as uuidv4 } from 'uuid';
+import { db } from "../db";
+import { Technologie } from "../@types/Technologies";
 
-import { Technologie } from '../@types/Technologies';
-import { User } from '../@types/User';
+const dbTec = db.technology;
 
-import { serviceGetUser, serviceUpdateUser } from './users';
-
-export const serviceCreateTechnologies = (
-	idUser: string,
-	{ title, studied, deadline, created_at }: Technologie
-) => {
-	const user: any = serviceGetUser(idUser);
-	const data = {
-		id: uuidv4(),
-		title,
-		studied: false,
-		deadline: new Date(deadline),
-		created_at: new Date(),
-	};
-	user?.technologies.push(data);
-	return data;
+export const serviceCreateTechnologies = ({
+    title,
+    userId,
+    deadline,
+}: Technologie) => {
+    const data: Technologie = {
+        title,
+        userId,
+        deadline: new Date(deadline),
+        studied: false,
+    };
+    const tec = dbTec.create({ data });
+    return tec;
 };
 
-export const serviceGetTechnologies = (id: string, idUser: string) => {
-	const user = serviceGetUser(idUser);
-	return user?.technologies.find((obj: Technologie) => obj.id === id);
+export const serviceGetTechnologies = (id: string) => {
+    return dbTec.findUnique({
+        where: { id },
+    });
 };
 
-export const serviceGetAllTechnologies = (idUser: string) => {
-	const user = serviceGetUser(idUser);
-	return user?.technologies;
+export const serviceGetAllTechnologies = (userId: string) => {
+    return dbTec.findMany({
+        where: { userId },
+    });
 };
 
-export const serviceUpdateTechnologies = (
-	id: string,
-	idUser: string,
-	data: Technologie
-) => {
-	const user: any = serviceGetUser(idUser);
-	const technologies: Technologie[] = user?.technologies.map(
-		(obj: Technologie) => {
-			if (obj.id === id) {
-				return { ...obj, ...data };
-			}
-			return obj;
-		}
-	);
-
-	const newUser: User = { ...user, technologies };
-	serviceUpdateUser(idUser, newUser);
-
-	const tec = serviceGetTechnologies(id, idUser);
-	return tec;
+export const serviceUpdateTechnologies = (id: string, data: Technologie) => {
+    if (data.deadline) {
+        data.deadline = new Date(data.deadline);
+    }
+    return dbTec.update({
+        where: { id },
+        data,
+    });
 };
 
-export const serviceDeleteTechnologies = (id: string, idUser: string) => {
-	const user: any = serviceGetUser(idUser);
-	const technologies: Technologie[] = user?.technologies.filter(
-		(obj: Technologie) => obj.id !== id
-	);
-	const newUser: User = { ...user, technologies };
-	serviceUpdateUser(idUser, newUser);
-	return true;
+export const serviceDeleteTechnologies = (id: string) => {
+    return dbTec.delete({
+        where: { id },
+    });
 };

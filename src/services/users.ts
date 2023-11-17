@@ -1,31 +1,35 @@
-import { Technologie } from '../@types/Technologies';
-import { User } from '../@types/User';
+import { User } from "../@types/User";
+import { db } from "../db";
 
-let userDB: User[] = [];
+const userDB = db.user;
 
-export const serviceCreateUser = ({
-	id,
-	name,
-	username,
-	technologies,
-}: User) => {
-	const data = { id, name, username, technologies: [] };
-	userDB.push(data);
+export const serviceCreateUser = ({ name, username }: User) => {
+    const data = { name, username };
+    const user = userDB.create({ data });
+    return user;
 };
 
 export const serviceGetUser = (id: string) => {
-	return userDB.find((obj) => obj.id === id);
+    return userDB.findUnique({
+        where: { id },
+    });
+};
+
+export const serviceGetUserForUsername = (username: string) => {
+    return userDB.findUnique({
+        where: { username },
+    });
 };
 
 export const serviceUpdateUser = (id: string, data: User) => {
-	userDB = userDB.map((obj) => {
-		if (obj.id === id) {
-			return { ...obj, ...data };
-		}
-		return obj;
-	});
+    userDB.update({
+        where: { id },
+        data,
+    });
 };
 
 export const serviceDeleteUser = (id: string) => {
-	userDB = userDB.filter((obj) => obj.id !== id);
+    userDB.delete({
+        where: { id },
+    });
 };

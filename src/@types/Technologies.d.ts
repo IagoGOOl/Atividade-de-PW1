@@ -1,7 +1,8 @@
 export type Technologie = {
-	id: string;
+	id?: string;
 	title: string;
 	studied: boolean;
 	deadline: Date;
-	created_at: Date;
+	userId: string;
+	created_at?: Date;
 };

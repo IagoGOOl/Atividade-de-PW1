@@ -1,8 +1,7 @@
 import express from 'express';
-import { User } from './@types/User';
+
 import { technologieRouter } from './route/technologieRoute';
 import { userRoute } from './route/userRoute';
-export const users = [] as User[];
 
 const app = express();
 
